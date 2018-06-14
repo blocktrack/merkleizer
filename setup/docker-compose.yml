@@ -1,0 +1,35 @@
+version: "2"
+services:
+ mongodb:
+   image: library/mongo
+ redis:
+   image: library/redis
+ bridge:
+   image: blocktrack/bridge
+   environment:
+      - WORKER=metaverse-testnet
+      - SEED=butter vacuum breeze glow virtual mutual veteran argue want pipe elite blast judge write sand toilet file joy exotic reflect truck topic receive wait
+      - NONCE=10
+      - MERKLEIZER=http://merkleizer
+   links:
+      - merkleizer
+ merkleizer:
+   image: blocktrack/merkleizer
+   environment:
+      - MONGO_HOST=mongodb
+      - MONG_PORT=27017
+      - MONGO_DB=blocktrack
+      - REDIS_HOST=redis
+      - HTTP_PORT=80
+   links:
+      - redis
+      - mongodb
+ proxy:
+   image: library/nginx
+   volumes:
+      - "./proxy/conf:/etc/nginx/conf.d:ro"
+      - "./proxy/html:/var/www/html:ro"
+   links:
+      - merkleizer
+   ports:
+      - "80:80"

@@ -1,0 +1,25 @@
+{
+  "name": "BlocktrackAPI",
+  "version": "0.2.0",
+  "description": "Private API functions for the blocktrack blockchain connector.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sven Mutzl",
+  "license": "MIT",
+  "dependencies": {
+    "apicache": "^0.8.3",
+    "body-parser": "^1.16.0",
+    "express": "^4.14.1",
+    "geojson": "^0.4.1",
+    "merkle": "^0.6.0",
+    "method-override": "^2.3.7",
+    "mongodb": "^2.2.33",
+    "morgan": "^1.8.0",
+    "path": "^0.12.7",
+    "redis": "^2.7.1",
+    "requestify": "^0.2.5"
+  }
+}
