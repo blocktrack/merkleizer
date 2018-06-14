@@ -1,5 +1,13 @@
 'use strict';
 
+function sleep(ms) {
+  var start = new Date().getTime(), expire = start + ms;
+  while (new Date().getTime() < expire) { }
+  return;
+}
+
+sleep(5000);
+
 //Load express
 var express = require('express');
 var app = express();
