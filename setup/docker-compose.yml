@@ -5,7 +5,7 @@ services:
  redis:
    image: library/redis
  worker_mvs:
-   image: blocktrack/bridge
+   image: blocktrack/worker
    environment:
       - WORKER=bitcoin-testnet
       - SEED=butter vacuum breeze glow virtual mutual veteran argue want pipe elite blast judge write sand toilet file joy exotic reflect truck topic receive wait
@@ -13,7 +13,7 @@ services:
    links:
       - merkleizer
  worker_btc:
-   image: blocktrack/bridge
+   image: blocktrack/worker
    environment:
       - WORKER=metaverse-testnet
       - SEED=test
