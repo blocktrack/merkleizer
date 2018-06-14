@@ -4,12 +4,19 @@ services:
    image: library/mongo
  redis:
    image: library/redis
- bridge:
+ worker_mvs:
+   image: blocktrack/bridge
+   environment:
+      - WORKER=bitcoin-testnet
+      - SEED=butter vacuum breeze glow virtual mutual veteran argue want pipe elite blast judge write sand toilet file joy exotic reflect truck topic receive wait
+      - MERKLEIZER=http://merkleizer
+   links:
+      - merkleizer
+ worker_btc:
    image: blocktrack/bridge
    environment:
       - WORKER=metaverse-testnet
-      - SEED=butter vacuum breeze glow virtual mutual veteran argue want pipe elite blast judge write sand toilet file joy exotic reflect truck topic receive wait
-      - NONCE=10
+      - SEED=test
       - MERKLEIZER=http://merkleizer
    links:
       - merkleizer
@@ -24,6 +31,14 @@ services:
    links:
       - redis
       - mongodb
+ hook:
+   image: maccyber/micro-dockerhub-hook
+   environment:
+     - TOKEN=ABC
+   volumes:
+      - ./dockerhub-hook/scripts:/src/scripts
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .:/blocktrack
  proxy:
    image: library/nginx
    volumes:
@@ -31,5 +46,6 @@ services:
       - "./proxy/html:/var/www/html:ro"
    links:
       - merkleizer
+      - hook
    ports:
       - "80:80"
