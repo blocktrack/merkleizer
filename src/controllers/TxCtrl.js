@@ -31,8 +31,7 @@ function get(req, res) {
     var chain = (req.query.chain) ? req.query.chain : 'bitcoin';
     Transaction.get(hash)
         .then((tx) => {
-            if (tx == null) throw Error('ERR_NOT_FOUND');
-            if (tx.worker[chain] == undefined)
+            if (tx.worker==undefined || tx.worker[chain] == undefined)
                 return {
                     hash: tx.hash,
                     script: tx.script,
@@ -54,7 +53,7 @@ function get(req, res) {
                         return {
                             hash: tx.hash,
                             script: tx.script,
-                            path: merkle('sha256').sync(arr).getProofPath(0),
+                            path: merkle('sha256').sync(arr).getProofPath(i),
                             tx_id: tx.worker[chain].tx
                         };
                     }
