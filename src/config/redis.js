@@ -1,9 +1,9 @@
 module.exports = {
     enabled: true,
     config: {
-        host: 'redis',
-        port: '6379',
         socket_keepalive: true,
-        password: undefined
+        "host": (process.env.REDIS_HOST) ? process.env.REDIS_HOST : '127.0.0.1',
+        "port": (process.env.REDIS_PORT) ? process.env.REDIS_PORT : "27017",
+        "database": (process.env.REDIS_PASS) ? process.env.REDIS_PASS : undefined,
     }
 };
