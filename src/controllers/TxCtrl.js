@@ -31,7 +31,6 @@ function get(req, res) {
     var chain = (req.query.chain) ? req.query.chain : 'bitcoin';
     Transaction.get(hash)
         .then((tx) => {
-            console.log(tx)
             if (tx.worker==undefined || tx.worker[chain] == undefined)
                 return {
                     hash: tx.hash,
