@@ -6,6 +6,7 @@ services:
    image: library/redis
  worker_mvs:
    image: blocktrack/worker
+   restart: always
    environment:
       - WORKER=metaverse-testnet
       - SEED=butter vacuum breeze glow virtual mutual veteran argue want pipe elite blast judge write sand toilet file joy exotic reflect truck topic receive wait
@@ -14,6 +15,7 @@ services:
       - merkleizer
  worker_btc:
    image: blocktrack/worker
+   restart: always
    environment:
       - WORKER=bitcoin-testnet
       - SEED=test
@@ -22,6 +24,7 @@ services:
       - merkleizer
  merkleizer:
    image: blocktrack/merkleizer
+   restart: always
    environment:
       - MONGO_HOST=mongodb
       - MONG_PORT=27017
