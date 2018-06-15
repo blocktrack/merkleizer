@@ -7,7 +7,7 @@ services:
  worker_mvs:
    image: blocktrack/worker
    environment:
-      - WORKER=bitcoin-testnet
+      - WORKER=metaverse-testnet
       - SEED=butter vacuum breeze glow virtual mutual veteran argue want pipe elite blast judge write sand toilet file joy exotic reflect truck topic receive wait
       - MERKLEIZER=http://merkleizer
    links:
@@ -15,7 +15,7 @@ services:
  worker_btc:
    image: blocktrack/worker
    environment:
-      - WORKER=metaverse-testnet
+      - WORKER=bitcoin-testnet
       - SEED=test
       - MERKLEIZER=http://merkleizer
    links:
