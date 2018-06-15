@@ -1,29 +1,4 @@
-<p align="center">
-  <a href="https://www.blocktrack.net/">
-  <h1 align="center">Blocktrack API</h1>
-  </a>
-  Merkleizing API for the blocktrack service
-</p>
-
-# How to use
-The easiest way to startup the services is using docker compose. It will automaticlly download and start all dependencies. An example setup you can find in setup folder.
-
-# Configuration
-
-The best way to configure your worker(s) is using environment variable. You can also use the configuration file in the config folder.
-
-| Environment variable | Description      |    Default |
-| ---                  | ---              |        --- |
-| HTTP_PORT            | Listening port   |         80 |
-| MONGO_HOST           | Mongodb host     |  127.0.0.1 |
-| MONGO_PORT           | MongoDB port     |      27017 |
-| MONGO_NAME           | Name of database | blocktrack |
-| REDIS_HOST           | Redis host       |  127.0.0.1 |
-| REDIS_PORT           | Redis port       |       6379 |
-| REDIS_PASS           | Redis password   |            |
-
-# What to use Blockrack for and when to use it
-
+# Blocktrack API
 Blocktrack is an opensource framework that helps you to blockchain your database without headache. Blocktrack syncs a shadow of your database records to enable you or your customers to verify the integrity of your database records.
 
 Privacy is always guaranteed because only hashes of your data leave your database. Also duplicate records result will always result in different hashes because the hash calculation always depend on the previous records hash.
@@ -45,3 +20,21 @@ Also the block of the anchor transaction will enable you to check the time of th
 
 ## Customer check
 If you want to enable your customer to verify his transaction you just need to provide the customer with the data from the verification process. In this case you will benefit from a good shadow model because you will be able to let the user fillout some inputs of the hash calculation and give the user a positive feedback if the resulting hash matches.
+
+# How to use
+The easiest way to startup the services is using docker compose. It will automaticlly download and start all dependencies. An example setup you can find in setup folder.
+
+# Configuration
+
+The best way to configure your worker(s) is using environment variable. You can also use the configuration file in the config folder.
+
+| Environment variable | Description      |    Default |
+| ---                  | ---              |        --- |
+| HTTP_PORT            | Listening port   |         80 |
+| MONGO_HOST           | Mongodb host     |  127.0.0.1 |
+| MONGO_PORT           | MongoDB port     |      27017 |
+| MONGO_NAME           | Name of database | blocktrack |
+| REDIS_HOST           | Redis host       |  127.0.0.1 |
+| REDIS_PORT           | Redis port       |       6379 |
+| REDIS_PASS           | Redis password   |            |
+
