@@ -4,6 +4,8 @@
 var Message = require('../models/message.js');
 var Transaction = require('../models/transaction');
 var merkle = require('merkle');
+const crypto = require('crypto');
+
 
 exports.add = add;
 exports.get = get;
@@ -31,7 +33,7 @@ function get(req, res) {
     var chain = (req.query.chain) ? req.query.chain : 'bitcoin';
     Transaction.get(hash)
         .then((tx) => {
-            if (tx.worker==undefined || tx.worker[chain] == undefined)
+            if (tx.worker == undefined || tx.worker[chain] == undefined)
                 return {
                     hash: tx.hash,
                     script: tx.script,
@@ -53,7 +55,7 @@ function get(req, res) {
                         return {
                             hash: tx.hash,
                             script: tx.script,
-                            path: merkle('sha256', false).sync(arr).getProofPath(i),
+                            path: formatPath(merkle('sha256', false).sync(arr).getProofPath(i), tx.hash),
                             tx_id: tx.worker[chain].tx
                         };
                     }
@@ -78,7 +80,10 @@ function getWork(req, res) {
     console.info('worker ' + worker + ' get work ' + nonce);
     Transaction.getWork(worker, nonce)
         .then((work) => getTree(work)
-              .then((hash) => res.json(Message(1, undefined, {work: hash.root(), anchor: work[0].worker[worker].tx})))
+            .then((hash) => res.json(Message(1, undefined, {
+                work: hash.root(),
+                anchor: work[0].worker[worker].tx
+            })))
         )
         .catch((error) => res.status(404).json(Message(0, error.message)));
 };
@@ -114,4 +119,37 @@ function getTree(work) {
             reject(Error('ERR_CANT_SEE_NO_TREE'));
         }
     });
+}
+
+function formatPath(path, hash) {
+    var steps = [{
+        op: 'sha256',
+        params: [hash],
+        res: crypto.createHash('sha256').update(hash).digest().toString('hex')
+    }];
+    let tmp = steps[0].res;
+    path.forEach(step => {
+        if (step.left == tmp) {
+            steps.push({
+                op: 'append',
+                params: [step.right],
+                res: tmp + step.right
+            });
+        } else if (step.right == tmp) {
+            steps.push({
+                op: 'prepend',
+                params: [step.lefft],
+                res: step.left + tmp
+            });
+        } else {
+            throw Error('Cant format tree path');
+        }
+        tmp = crypto.createHash('sha256').update(steps[steps.length - 1].res).digest().toString('hex');
+        steps.push({
+            op: 'sha256',
+            params: [steps[steps.length - 1].res],
+            res: tmp
+        });
+    });
+    return steps;
 }
