@@ -31,7 +31,7 @@ function add(req, res) {
 function get(req, res) {
     var hash = req.params.hash;
     var chain = (req.query.chain) ? req.query.chain : 'bitcoin';
-    var treeformat = req.query.treeformat || 'short';
+    var treeformat = req.query.treeformat || 'full';
     Transaction.get(hash)
         .then((tx) => {
             if (tx.worker == undefined || tx.worker[chain] == undefined)
