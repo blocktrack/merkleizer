@@ -31,6 +31,7 @@ function add(req, res) {
 function get(req, res) {
     var hash = req.params.hash;
     var chain = (req.query.chain) ? req.query.chain : 'bitcoin';
+    var treeformat = req.query.treeformat || 'short';
     Transaction.get(hash)
         .then((tx) => {
             if (tx.worker == undefined || tx.worker[chain] == undefined)
@@ -55,7 +56,7 @@ function get(req, res) {
                         return {
                             hash: tx.hash,
                             script: tx.script,
-                            path: formatPath(merkle('sha256', false).sync(arr).getProofPath(i), tx.hash),
+                            path: formatPath(merkle('sha256', false).sync(arr).getProofPath(i), tx.hash, treeformat),
                             tx_id: tx.worker[chain].tx
                         };
                     }
@@ -121,10 +122,10 @@ function getTree(work) {
     });
 }
 
-function formatPath(path, hash) {
+function formatPath(path, hash, treeformat) {
     var steps = [{
         op: 'sha256',
-        params: [hash],
+        params: (treeformat == 'full') ? [hash] : undefined,
         res: crypto.createHash('sha256').update(hash).digest().toString('hex')
     }];
     let tmp = steps[0].res;
@@ -132,13 +133,13 @@ function formatPath(path, hash) {
         if (step.left == tmp) {
             steps.push({
                 op: 'append',
-                params: [step.right],
+                params: (treeformat == 'full') ? [step.right] : undefined,
                 res: tmp + step.right
             });
         } else if (step.right == tmp) {
             steps.push({
                 op: 'prepend',
-                params: [step.lefft],
+                params: (treeformat == 'full') ? [step.lefft] : undefined,
                 res: step.left + tmp
             });
         } else {
@@ -147,7 +148,7 @@ function formatPath(path, hash) {
         tmp = crypto.createHash('sha256').update(steps[steps.length - 1].res).digest().toString('hex');
         steps.push({
             op: 'sha256',
-            params: [steps[steps.length - 1].res],
+            params: (treeformat == 'full') ? [steps[steps.length - 1].res] : undefined,
             res: tmp
         });
     });
