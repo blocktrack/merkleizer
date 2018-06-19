@@ -3,7 +3,7 @@
 //Load Models
 var Message = require('../models/message.js');
 var Transaction = require('../models/transaction');
-var merkle = require('merkle');
+var merkle = require('merkle')('sha256', false, true);
 const crypto = require('crypto');
 
 
@@ -56,7 +56,7 @@ function get(req, res) {
                         return {
                             hash: tx.hash,
                             script: tx.script,
-                            path: formatPath(merkle('sha256', false).sync(arr).getProofPath(i), tx.hash, treeformat),
+                            path: formatPath(merkle.sync(arr).getProofPath(i), tx.hash, treeformat),
                             tx_id: tx.worker[chain].tx
                         };
                     }
@@ -115,7 +115,7 @@ function getTree(work) {
         if (work.length) {
             let arr = [];
             work.forEach((e) => arr.push(e.hash));
-            resolve(merkle('sha256', false).sync(arr));
+            resolve(merkle.sync(arr));
         } else {
             reject(Error('ERR_CANT_SEE_NO_TREE'));
         }
