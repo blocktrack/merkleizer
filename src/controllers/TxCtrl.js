@@ -139,7 +139,7 @@ function formatPath(path, hash, treeformat) {
         } else if (step.right == tmp) {
             steps.push({
                 op: 'prepend',
-                params: (treeformat == 'full') ? [step.lefft] : undefined,
+                params: (treeformat == 'full') ? [step.left] : undefined,
                 res: step.left + tmp
             });
         } else {
