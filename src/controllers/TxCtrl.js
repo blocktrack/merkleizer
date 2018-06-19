@@ -53,7 +53,7 @@ function get(req, res) {
                         return {
                             hash: tx.hash,
                             script: tx.script,
-                            path: merkle('sha256').sync(arr).getProofPath(i),
+                            path: merkle('sha256', false).sync(arr).getProofPath(i),
                             tx_id: tx.worker[chain].tx
                         };
                     }
@@ -109,7 +109,7 @@ function getTree(work) {
         if (work.length) {
             let arr = [];
             work.forEach((e) => arr.push(e.hash));
-            resolve(merkle('sha256').sync(arr));
+            resolve(merkle('sha256', false).sync(arr));
         } else {
             reject(Error('ERR_CANT_SEE_NO_TREE'));
         }
