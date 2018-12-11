@@ -43,7 +43,10 @@ function get(hash) {
             let descriptor = {
                 hash: hash
             };
-            return db.collection('tx').findOne(descriptor);
+            return db.collection('tx').findOne(descriptor).then(tx=>{
+                if(tx) return tx
+                throw Error('ERR_TRANSACTION_NOT_FOUND');
+            });
         })
         .catch(error => {
             console.error(error);
